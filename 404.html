@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page introuvable · Fawazir</title>
+  <meta name="theme-color" content="#22177A">
+    <style>
+    html, body { margin: 0; height: 100%; background: #22177A; color: #fff; font-family: system-ui, -apple-system, sans-serif; }
+    body { display: grid; place-items: center; text-align: center; padding: 16px; }
+    a { color: #FFC83D; font-weight: 800; }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Page introuvable</h1>
+    <p><a id="home" href="/">Revenir à l'accueil de Fawazir</a></p>
+  </div>
+  <script>
+    // Sur l'adresse GitHub provisoire, le site vit dans /fawazir/.
+    if (location.pathname.startsWith('/fawazir/')) document.getElementById('home').href = '/fawazir/';
+  </script>
+</body>
+</html>
