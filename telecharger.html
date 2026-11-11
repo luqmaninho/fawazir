@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Télécharger Fawazir</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#2A1C8C">
+  <style>
+    html, body { margin: 0; min-height: 100%; background: #2A1C8C; color: #fff; font-family: system-ui, -apple-system, sans-serif; }
+    body { display: grid; place-items: center; text-align: center; padding: 24px 16px; box-sizing: border-box; min-height: 100vh; }
+    h1 { font-size: 28px; margin: 0 0 8px; }
+    p { margin: 0 0 24px; opacity: .85; }
+    .liens { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .liens a { display: block; min-width: 220px; padding: 14px 20px; border-radius: 14px; background: #FFC83D; color: #2A1C8C; font-weight: 800; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div>
+    <h1 id="titre">Fawazir</h1>
+    <p id="texte">Jeux de soirée et quiz sur l'islam</p>
+    <div class="liens">
+      <a id="android" href="https://play.google.com/store/apps/details?id=com.playfawazir.app">Google Play</a>
+      <a id="ios" href="https://apps.apple.com/app/id6831365398">App Store</a>
+    </div>
+  </div>
+  <script>
+    // Lien des pubs : envoie vers le bon store selon le téléphone. Les paramètres utm_* de l'adresse
+    // sont transmis à Google Play (referrer), pour retrouver l'origine des installations dans la Play Console.
+    (function () {
+      var q = new URLSearchParams(location.search);
+      var utm = [];
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) {
+        if (q.get(k)) utm.push(k + '=' + encodeURIComponent(q.get(k)));
+      });
+      var play = 'https://play.google.com/store/apps/details?id=com.playfawazir.app';
+      if (utm.length) play += '&referrer=' + encodeURIComponent(utm.join('&'));
+      var appStore = 'https://apps.apple.com/app/id6831365398';
+      document.getElementById('android').href = play;
+
+      var textes = {
+        en: ['Fawazir', 'Muslim party games and Islamic quiz'],
+        ar: ['فوازير', 'مسابقات إسلامية وألعاب سهرة جماعية'],
+        tr: ['Fawazir', 'İslami bilgi yarışması ve grup oyunları']
+      };
+      var langue = (navigator.language || 'fr').slice(0, 2);
+      if (textes[langue]) {
+        document.documentElement.lang = langue;
+        if (langue === 'ar') document.documentElement.dir = 'rtl';
+        document.getElementById('titre').textContent = textes[langue][0];
+        document.getElementById('texte').textContent = textes[langue][1];
+      }
+
+      var ua = navigator.userAgent || '';
+      if (/android/i.test(ua)) location.replace(play);
+      else if (/iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) location.replace(appStore);
+    })();
+  </script>
+</body>
+</html>
