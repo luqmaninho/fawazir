@@ -1,0 +1,37 @@
+/* Pages de Fawaid (confidentialité, aide) : la nuit de Fawaid, or et ivoire. Polices du système : aucune requête
+   vers un autre site. */
+:root {
+  --nuit: #060A1D;
+  --nuit2: #0E1535;
+  --ivoire: #F5EFE0;
+  --or: #E6C27A;
+  --doux: #B9BEDA;
+  --trait: rgba(255, 255, 255, 0.1);
+  --serif: "Iowan Old Style", "Palatino", Georgia, serif;
+  --ui: -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: radial-gradient(120% 50% at 50% 100%, #1D2456 0%, var(--nuit2) 45%, var(--nuit) 100%) fixed, var(--nuit);
+  color: var(--ivoire);
+  font: 16px/1.65 var(--ui);
+}
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 max(18px, env(safe-area-inset-left, 0px)); }
+header { padding: 28px 0 8px; }
+.marque { display: inline-flex; align-items: center; gap: 10px; color: var(--ivoire); text-decoration: none; font: 600 22px var(--serif); }
+.marque svg { width: 26px; height: 26px; }
+main { padding: 18px 0 56px; }
+h1 { font: 400 clamp(30px, 6vw, 40px)/1.15 var(--serif); margin: 18px 0 6px; }
+h2 { font: 600 20px/1.3 var(--serif); margin: 34px 0 8px; color: var(--or); }
+.date { color: var(--doux); font-size: 14px; margin: 0 0 22px; }
+.bref { background: rgba(230, 194, 122, 0.12); border: 1px solid rgba(230, 194, 122, 0.35); border-radius: 16px; padding: 14px 18px; }
+p, li { color: var(--ivoire); }
+ul { padding-left: 22px; }
+li { margin: 4px 0; }
+a { color: var(--or); }
+.q { margin-top: 26px; }
+.q h2 { margin-bottom: 4px; }
+footer { border-top: 1px solid var(--trait); padding: 22px 0 40px; color: var(--doux); font-size: 14px; }
+footer nav { display: flex; flex-wrap: wrap; gap: 18px; }
