@@ -40,8 +40,9 @@
     (function () {
       var q = new URLSearchParams(location.search);
       var appStore = 'https://apps.apple.com/app/id6834394816';
-      var ct = (q.get('ct') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 30);
-      if (ct) appStore += '?ct=' + ct + '&mt=8';
+      var ct = (q.get('ct') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 40);
+      // pt : jeton fournisseur du compte développeur (App Store Connect > Analytics > Campagnes), sans lui Apple ne compte pas ct.
+      appStore += '?pt=129739129&ct=' + (ct || 'site') + '&mt=8';
       var utm = [];
       ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) {
         if (q.get(k)) utm.push(k + '=' + encodeURIComponent(q.get(k)));
