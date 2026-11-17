@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Télécharger Fawaid</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#060A1D">
+  <link rel="icon" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <style>
+    html, body { margin: 0; min-height: 100%; background: #060A1D; color: #F5EFE0; font-family: system-ui, -apple-system, sans-serif; }
+    body { display: grid; place-items: center; text-align: center; padding: 24px 16px; box-sizing: border-box; min-height: 100vh;
+      background: radial-gradient(120% 60% at 50% 100%, #1D2456 0%, #0E1535 45%, #060A1D 100%); }
+    img { width: 84px; height: 84px; border-radius: 20px; }
+    h1 { font-size: 30px; margin: 14px 0 6px; font-family: "Iowan Old Style", Palatino, Georgia, serif; font-weight: 400; }
+    p { margin: 0 0 26px; color: #B9BEDA; }
+    .liens { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .liens a { display: block; min-width: 220px; padding: 14px 20px; border-radius: 14px; background: #E6C27A; color: #10152F; font-weight: 800; text-decoration: none; }
+    .liens span { color: #8E95BC; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div>
+    <img src="apple-touch-icon.png" alt="">
+    <h1 id="titre">Fawaid</h1>
+    <p id="texte">Quoi que tu ressentes, l’islam a les mots.</p>
+    <div class="liens">
+      <a id="ios" href="https://apps.apple.com/app/id6834394816">App Store</a>
+      <a id="android" href="https://play.google.com/store/apps/details?id=app.fawaid" hidden>Google Play</a>
+      <span id="bientot">Bientôt sur Google Play</span>
+    </div>
+  </div>
+  <script>
+    // Lien des pubs Fawaid : envoie directement vers le bon magasin selon le téléphone. Le paramètre ct de l'adresse
+    // (étiquette de campagne, par exemple ?ct=meta-fr) est transmis à l'App Store, qui compte les installations par
+    // étiquette dans App Store Connect ; les utm_* sont transmis à Google Play (referrer).
+    // ANDROID : passer à true quand l'app sera publiée sur Google Play.
+    var ANDROID = false;
+    (function () {
+      var q = new URLSearchParams(location.search);
+      var appStore = 'https://apps.apple.com/app/id6834394816';
+      var ct = (q.get('ct') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 30);
+      if (ct) appStore += '?ct=' + ct + '&mt=8';
+      var utm = [];
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].forEach(function (k) {
+        if (q.get(k)) utm.push(k + '=' + encodeURIComponent(q.get(k)));
+      });
+      var play = 'https://play.google.com/store/apps/details?id=app.fawaid';
+      if (utm.length) play += '&referrer=' + encodeURIComponent(utm.join('&'));
+      document.getElementById('ios').href = appStore;
+      document.getElementById('android').href = play;
+      if (ANDROID) { document.getElementById('android').hidden = false; document.getElementById('bientot').hidden = true; }
+
+      var textes = {
+        en: ['Fawaid', 'Whatever you feel, Islam has the words.', 'Coming soon on Google Play'],
+        tr: ['Fawaid', 'Ne hissedersen hisset, İslam’ın sana bir sözü var.', 'Yakında Google Play’de'],
+        ar: ['فوائد', 'مهما كان شعورك، فللإسلام كلمة لك.', 'قريبًا على Google Play']
+      };
+      var langue = (navigator.language || 'fr').slice(0, 2);
+      if (textes[langue]) {
+        document.documentElement.lang = langue;
+        if (langue === 'ar') document.documentElement.dir = 'rtl';
+        document.getElementById('titre').textContent = textes[langue][0];
+        document.getElementById('texte').textContent = textes[langue][1];
+        document.getElementById('bientot').textContent = textes[langue][2];
+      }
+
+      var ua = navigator.userAgent || '';
+      if (/iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) location.replace(appStore);
+      else if (ANDROID && /android/i.test(ua)) location.replace(play);
+    })();
+  </script>
+</body>
+</html>
