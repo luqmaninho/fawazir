@@ -68,7 +68,16 @@
       }
 
       var ua = navigator.userAgent || '';
-      if (/iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) location.replace(appStore);
+      if (/iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+        // Les navigateurs intégrés (Instagram, Facebook, TikTok) affichent la version web de l'App Store au lieu d'ouvrir
+        // l'app App Store : il faut encore un appui, et 93 % des clics Instagram se perdaient là (19/11/2026 : 211 clics,
+        // 15 vues de la fiche). itms-apps ouvre directement l'app App Store, avec pt et ct (l'étiquette est gardée).
+        // Secours : si rien ne s'ouvre en 1,5 s (schéma bloqué), on passe au lien web, comme avant.
+        var secours = setTimeout(function () { location.replace(appStore); }, 1500);
+        document.addEventListener('visibilitychange', function () { if (document.hidden) clearTimeout(secours); });
+        window.addEventListener('pagehide', function () { clearTimeout(secours); });
+        location.href = appStore.replace(/^https:/, 'itms-apps:');
+      }
       else if (ANDROID && /android/i.test(ua)) location.replace(play);
     })();
   </script>
