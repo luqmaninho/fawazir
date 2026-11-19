@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Télécharger Fawaid</title>
   <meta name="robots" content="noindex">
+  <script>
+    // Sur iPhone, on part vers l'app App Store avant même d'afficher la page (les pubs Meta « Trafic » refusent un lien
+    // App Store direct, d'où cette page). Même lien que plus bas : pt (jeton fournisseur) et ct (étiquette de campagne).
+    (function () {
+      var ua = navigator.userAgent || '';
+      if (!(/iphone|ipad|ipod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1))) return;
+      var ct = (new URLSearchParams(location.search).get('ct') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 40);
+      window.FAWAID_APPSTORE = 'https://apps.apple.com/app/id6834394816?pt=129739129&ct=' + (ct || 'site') + '&mt=8';
+      window.FAWAID_PARTI = true;
+      location.href = window.FAWAID_APPSTORE.replace(/^https:/, 'itms-apps:');
+    })();
+  </script>
   <meta name="theme-color" content="#060A1D">
   <link rel="icon" href="favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -73,10 +85,11 @@
         // l'app App Store : il faut encore un appui, et 93 % des clics Instagram se perdaient là (19/11/2026 : 211 clics,
         // 15 vues de la fiche). itms-apps ouvre directement l'app App Store, avec pt et ct (l'étiquette est gardée).
         // Secours : si rien ne s'ouvre en 1,5 s (schéma bloqué), on passe au lien web, comme avant.
+        // L'ouverture est déjà lancée dans <head> (FAWAID_PARTI) ; ici, seulement le secours.
         var secours = setTimeout(function () { location.replace(appStore); }, 1500);
         document.addEventListener('visibilitychange', function () { if (document.hidden) clearTimeout(secours); });
         window.addEventListener('pagehide', function () { clearTimeout(secours); });
-        location.href = appStore.replace(/^https:/, 'itms-apps:');
+        if (!window.FAWAID_PARTI) location.href = appStore.replace(/^https:/, 'itms-apps:');
       }
       else if (ANDROID && /android/i.test(ua)) location.replace(play);
     })();
